@@ -31,6 +31,7 @@ import org.jfree.ui.RefineryUtilities;
 import com.musicg.graphic.GraphicRender;
 import com.musicg.wave.Wave;
 import com.musicg.wave.extension.Spectrogram;
+import com.spencerbarton.acousticbarcodes.decoder.AcousticBarcodeDecoder;
 
 public class Main {
 
@@ -44,9 +45,6 @@ public class Main {
 
 		Wave recording = new Wave(wav.getAbsolutePath());
 		//System.out.println(recording.toString());
-		
-		double[] data = {0.0, 1.0, 2.0, 1.0, 0.0};
-		drawPlot("Foo", data);
 		
 		System.out.println("Done");
 		
