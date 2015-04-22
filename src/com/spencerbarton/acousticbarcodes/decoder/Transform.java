@@ -12,7 +12,7 @@ public class Transform {
 
     private static final String TAG = "Transform";
 
-    private static final int LOWEST_FREQ = 15;
+    private static final int LOWEST_FREQ = 12;
     private static final int FFT_SZ = 128;
     private static final int OVERLAP_FACTOR = 3;
     private static final double MIN_SPEC_VAL = 0;
@@ -40,8 +40,11 @@ public class Transform {
 
     private double[] sumSpectrum(double[][] data, int lowestFreq) {
         double[] summedSpectrum = new double[data.length];
-        for (int i = lowestFreq; i < data.length; i++) {
-            summedSpectrum[i] = StatUtils.sum(data[i]);
+        int numFreq;
+        for (int i = 0; i < data.length; i++) {
+        	// Sum only upper so many frequencies
+        	numFreq = data[i].length - lowestFreq;
+            summedSpectrum[i] = StatUtils.sum(data[i], lowestFreq, numFreq);
             // Value floor
             summedSpectrum[i] = Math.max(summedSpectrum[i], MIN_SPEC_VAL);
         }

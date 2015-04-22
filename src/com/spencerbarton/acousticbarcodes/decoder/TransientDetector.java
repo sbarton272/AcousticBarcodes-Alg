@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Created by Spencer on 4/20/2015.
@@ -15,7 +16,7 @@ public class TransientDetector {
     private static final int FLT_LEN = 8;
     private static final double FLT_SIGMA = 2;
 	private static final double PEAK_SCALE = 0.5;
-	private static final double MEAN_SCALE = 1.0;
+	private static final double THRESH_SCALE = 1.0;
 
     private final GaussianFilter mGaussFlt = new GaussianFilter(FLT_LEN, FLT_SIGMA);;
 
@@ -45,7 +46,9 @@ public class TransientDetector {
     	double[] peaks = new double[data.length];
     	
     	double mean = StatUtils.mean(data);
-    	System.out.println("Peak mean " + mean);
+    	double std = FastMath.sqrt(StatUtils.variance(data));
+    	double thresh = mean + std;
+    	System.out.println("Peak mean " + mean + " Peak std " + std);
     	
     	// Iter through and find valid max
     	double val, nextVal, prominence,curMin;
@@ -73,7 +76,7 @@ public class TransientDetector {
     			prominence = lastMax - Math.max(lastMin, curMin);
     			
     			// Prominence much be large enough as well as the peak must be larger than the mean
-    			if ((lastMax > mean*MEAN_SCALE) && (prominence > lastMax*PEAK_SCALE)) {
+    			if ((lastMax > thresh*THRESH_SCALE) && (prominence > lastMax*PEAK_SCALE)) {
     				peaks[lastMaxI] = 1;
     				peakLocs.add(lastMaxI);
     			}
