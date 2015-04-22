@@ -1,6 +1,5 @@
 package com.spencerbarton.acousticbarcodes.decoder;
 
-import com.musicg.graphic.GraphicRender;
 import com.musicg.wave.Wave;
 import com.musicg.wave.extension.Spectrogram;
 
@@ -11,9 +10,9 @@ import org.apache.commons.math3.stat.StatUtils;
  */
 public class Transform {
 
-    private static final String TAG = "PreFilter";
+    private static final String TAG = "Transform";
 
-    private static final int LOWEST_FREQ = 10;
+    private static final int LOWEST_FREQ = 15;
     private static final int FFT_SZ = 128;
     private static final int OVERLAP_FACTOR = 3;
     private static final double MIN_SPEC_VAL = 0;

@@ -45,7 +45,7 @@ public class AcousticBarcodeDecoder {
         Main.drawPlot("Sum Spec", data);
 
         // Transient Detection
-        double[] transientLocs = mTransientDetector.detect(data);
+        int[] transientLocs = mTransientDetector.detect(data);
 
         // Decoding
 
