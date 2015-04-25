@@ -38,18 +38,26 @@ public class Main {
 	public static void main(String[] args) {
 		int[] BITS = { 1, 1 };
 		int LEN = 8;
-		File wav = new File("data/test.wav");
 		AcousticBarcodeDecoder decoder = new AcousticBarcodeDecoder(LEN, BITS,
 				BITS);
+
+		// Test good
+		File wav = new File("data/test.wav");
 		int[] code = decoder.decode(wav);
 		if (code == null) {
 			System.out.println("Could not decode");
 		} else {				
 			System.out.println("Decoded " + Arrays.toString(code));
 		}
-
-		Wave recording = new Wave(wav.getAbsolutePath());
-		//System.out.println(recording.toString());
+		
+		//Test bad
+		wav = new File("data/testBad.wav");
+		code = decoder.decode(wav);
+		if (code == null) {
+			System.out.println("Could not decode");
+		} else {				
+			System.out.println("Decoded " + Arrays.toString(code));
+		}
 		
 		System.out.println("Done");
 		
