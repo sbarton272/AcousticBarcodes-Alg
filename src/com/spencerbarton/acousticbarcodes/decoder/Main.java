@@ -50,6 +50,14 @@ public class Main {
 		
 	}
 
+	public static void drawPlot(String title, int[] intData) {
+		double[] data = new double[intData.length];
+		for (int i = 0; i < intData.length; i++) {
+			data[i] = (double)intData[i];
+		}
+		drawPlot(title, data);
+	}
+	
 	public static void drawPlot(String title, double[] data) {
 		LineChart chart = new LineChart(title, title, data);
 		chart.pack();
@@ -66,6 +74,7 @@ public class Main {
         System.out.println("SpecSz: " + data.length + " " + data[0].length);
         
 	}
+
 }
 
 class LineChart extends ApplicationFrame {

@@ -8,6 +8,11 @@ import java.util.Arrays;
 
 /**
  * Contains acoustic barcode algorithm
+ * 
+ * TODO
+ * consts obj
+ * different decoders
+ * settings control consts
  *
  * Created by Spencer on 3/22/2015.
  */
@@ -27,6 +32,7 @@ public class AcousticBarcodeDecoder {
     // Components
     private final Transform mTransform;
     private final TransientDetector mTransientDetector;
+    private final Decoder mDecoder;
     
     public AcousticBarcodeDecoder(int codeLen, int[] startBits, int[] stopBits) {
         mCodeLen = codeLen;
@@ -34,6 +40,7 @@ public class AcousticBarcodeDecoder {
         mStopBits = stopBits;
         mTransform = new Transform();
         mTransientDetector = new TransientDetector();
+        mDecoder = new Decoder(ENCODING_UNIT_LEN_ONE, ENCODING_UNIT_LEN_ZERO, codeLen, startBits, stopBits);
     }
 
     public int[] decode(File file) {
@@ -46,12 +53,15 @@ public class AcousticBarcodeDecoder {
 
         // Transient Detection
         int[] transientLocs = mTransientDetector.detect(data);
-
+        
         // Decoding
+        int[] code = mDecoder.decode(transientLocs);
+        
+        System.out.println("Decoded " + code);
 
         // Error Detection
 
-        return mStartBits;
+        return code;
     }
 
 }
