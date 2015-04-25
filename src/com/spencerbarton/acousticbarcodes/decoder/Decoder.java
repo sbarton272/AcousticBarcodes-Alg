@@ -15,8 +15,8 @@ public class Decoder {
 	private static final double[] UNIT_LEN_W = {.2, .8};
 	
     // Params
-	private int mUnitLenOne;
-	private int mUnitLenZero;
+	private double mUnitLenOne;
+	private double mUnitLenZero;
     private int mCodeLen;
     private int[] mStartBits = {1, 1};
     private int[] mStopBits;
@@ -24,7 +24,7 @@ public class Decoder {
     private double[] mUnitLenAvg;
     private ArrayList<Integer> mDecoded;
     
-	public Decoder(int unitLenOne, int unitLenZero, int codeLen, int[] startBits, int[] stopBits) {
+	public Decoder(double unitLenOne, double unitLenZero, int codeLen, int[] startBits, int[] stopBits) {
 		mUnitLenOne = unitLenOne;
 		mUnitLenZero = unitLenZero;
 		mCodeLen = codeLen;
@@ -34,8 +34,13 @@ public class Decoder {
 
 	public int[] decode(int[] transientLocs) {
 		
+		// TODO interonset delays member var
+		
 		mDecoded.clear();
 		int[] interOnsetDelays = differences(transientLocs);
+		
+		System.out.println("Interonset Delays " + Arrays.toString(interOnsetDelays));
+		
 		mUnitLenAvg = new double[interOnsetDelays.length];
 				
 		// TODO handle reverse
@@ -59,7 +64,7 @@ public class Decoder {
 		double oneLen, zeroLen, oneDist, zeroDist, curUnitLen;
 		
 		// Start with unit len from decoded start bits
-		double unitLen = interOnsetDelays[curIndx - 1];
+		double unitLen = mUnitLenAvg[curIndx - 1];
 				
 		// Iterate through remaining delays and decode
 		for (int i = curIndx; i < interOnsetDelays.length; i++) {
@@ -75,13 +80,13 @@ public class Decoder {
 			oneDist = Math.abs(oneLen - curDelay);
 			zeroDist = Math.abs(zeroLen - curDelay);
 			
-			if ((oneDist < zeroDist) && isWithinThreshold(oneDist)) {
+			if ((oneDist < zeroDist) && isWithinThreshold(oneLen, curDelay)) {
 				
 				// Decoded a 1
 				mDecoded.add(ONE);
 				curUnitLen = curDelay / mUnitLenOne;
 				
-			} else if (isWithinThreshold(zeroDist)) {
+			} else if (isWithinThreshold(zeroLen, curDelay)) {
 				
 				// Decoded a 0
 				mDecoded.add(ZERO);
@@ -139,17 +144,12 @@ public class Decoder {
 		return UNIT_LEN_W[0]*prevUnitLen + UNIT_LEN_W[1]*curUnitLen;
 	}
 
-	private boolean isWithinThreshold(int x, int y) {
-		double X = (double)x;
-		double Y = (double)y;
-		return isWithinThreshold(X/Y);
-	}
-	
-	private boolean isWithinThreshold(double d) {
+	private boolean isWithinThreshold(double x, double y) {
+		double d = x / y;
 		if ((d < PROPORTION_THRESH) && ((1 / d) < PROPORTION_THRESH)) {
 			return true;
 		}
 		return false;
 	}
-
+	
 }

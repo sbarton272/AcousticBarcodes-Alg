@@ -21,8 +21,8 @@ public class AcousticBarcodeDecoder {
     private static final String TAG = "AcousticBarcodeDecoder";
 
     // Consts
-    private static final int ENCODING_UNIT_LEN_ONE = 1;
-    private static final int ENCODING_UNIT_LEN_ZERO = 2;
+    private static final double ENCODING_UNIT_LEN_ONE = 1;
+    private static final double ENCODING_UNIT_LEN_ZERO = 1.8;
 
     // Params
     private int mCodeLen;
@@ -57,7 +57,7 @@ public class AcousticBarcodeDecoder {
         // Decoding
         int[] code = mDecoder.decode(transientLocs);
         
-        System.out.println("Decoded " + code);
+        System.out.println("Decoder " + Arrays.toString(code));
 
         // Error Detection
 
