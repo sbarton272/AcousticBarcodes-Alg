@@ -17,17 +17,15 @@ public class Decoder {
     // Params
 	private double mUnitLenOne;
 	private double mUnitLenZero;
-    private int mCodeLen;
     private int[] mStartBits = {1, 1};
     private int[] mStopBits;
     
     private double[] mUnitLenAvg;
     private ArrayList<Integer> mDecoded;
     
-	public Decoder(double unitLenOne, double unitLenZero, int codeLen, int[] startBits, int[] stopBits) {
+	public Decoder(double unitLenOne, double unitLenZero, int[] startBits, int[] stopBits) {
 		mUnitLenOne = unitLenOne;
 		mUnitLenZero = unitLenZero;
-		mCodeLen = codeLen;
         mStopBits = stopBits;
         mDecoded = new ArrayList<>();
     }

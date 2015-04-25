@@ -41,7 +41,12 @@ public class Main {
 		File wav = new File("data/test.wav");
 		AcousticBarcodeDecoder decoder = new AcousticBarcodeDecoder(LEN, BITS,
 				BITS);
-		System.out.println("Decoded " + Arrays.toString(decoder.decode(wav)));
+		int[] code = decoder.decode(wav);
+		if (code == null) {
+			System.out.println("Could not decode");
+		} else {				
+			System.out.println("Decoded " + Arrays.toString(code));
+		}
 
 		Wave recording = new Wave(wav.getAbsolutePath());
 		//System.out.println(recording.toString());
